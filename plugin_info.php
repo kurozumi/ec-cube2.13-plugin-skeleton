@@ -65,8 +65,9 @@ class plugin_info
      *  register関数を書かずにフックポイントでの介入が可能です。
      */
     static $HOOK_POINTS = array(
-        array("prefilterTransform", "prefilterTransform"),
-        array("outputfilterTransform", "outputfilterTransform")
+        array("loadClassFileChange", "loadClassFileChange"), // SC_系クラスをフック
+        array("prefilterTransform", "prefilterTransform"), // コンパイル前のテンプレートをフック
+        array("outputfilterTransform", "outputfilterTransform") // コンパイル後のテンプレートをフック
     );
 
     /** ライセンス */

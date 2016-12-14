@@ -104,6 +104,20 @@ class PluginName extends SC_Plugin_Base
      */
     public function register(SC_Helper_Plugin $objHelperPlugin, $priority)
     {
+        $objHelperPlugin->addAction("loadClassFileChange", array(&$this, "loadClassFileChange"), $this->arrSelfInfo['priority']);
+        $objHelperPlugin->addAction("prefilterTransform", array(&$this, "prefilterTransform"), $this->arrSelfInfo['priority']);
+        $objHelperPlugin->addAction("outputfilterTransform", array(&$this, "outputfilterTransform"), $this->arrSelfInfo['priority']);
+
+    }
+
+    /**
+     * SC_系のクラスをフックする
+     * 
+     * @param type $classname
+     * @param type $classpath
+     */
+    public function loadClassFileChange(&$classname, &$classpath)
+    {
         
     }
 
@@ -133,7 +147,7 @@ class PluginName extends SC_Plugin_Base
         $source = $objTransform->getHTML();
 
     }
-    
+
     /**
      * テンプレートをフックする
      *
