@@ -36,28 +36,28 @@
         <th>フィールド1</th>
         <td>
             <span class="attention"><!--{$arrErr.free_field1}--></span>
-			<input type="text" name="free_field1" value="<!--{$arrForm.free_field1|h}-->" class="box30" />
+            <input type="text" name="free_field1" value="<!--{$arrForm.free_field1|h}-->" class="box30" />
 		</td>
 	</tr>
     <tr >
         <th>フィールド2</th>
         <td>
             <span class="attention"><!--{$arrErr.free_field2}--></span>
-			<input type="text" name="free_field2" value="<!--{$arrForm.free_field2|h}-->" class="box30" />
+            <input type="text" name="free_field2" value="<!--{$arrForm.free_field2|h}-->" class="box30" />
 		</td>
 	</tr>
     <tr >
         <th>フィールド3</th>
         <td>
             <span class="attention"><!--{$arrErr.free_field3}--></span>
-			<input type="text" name="free_field3" value="<!--{$arrForm.free_field3|h}-->" class="box30" />
+            <input type="text" name="free_field3" value="<!--{$arrForm.free_field3|h}-->" class="box30" />
 		</td>
 	</tr>
     <tr >
         <th>フィールド4</th>
         <td>
             <span class="attention"><!--{$arrErr.free_field4}--></span>
-			<input type="text" name="free_field4" value="<!--{$arrForm.free_field4|h}-->" class="box30" />
+            <input type="text" name="free_field4" value="<!--{$arrForm.free_field4|h}-->" class="box30" />
 		</td>
 	</tr>
 </table>
@@ -69,7 +69,6 @@
         </li>
     </ul>
 </div>
-
 </form>
 
 <!--{else}-->
