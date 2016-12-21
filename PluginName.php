@@ -42,7 +42,7 @@ class PluginName extends SC_Plugin_Base
     public function __construct(array $arrSelfInfo)
     {
         // プラグインを有効化したときの初期設定をココに追加する
-        if($arrSelfInfo["enable] == 1) {}
+        if($arrSelfInfo["enable"] == 1) {}
 
     }
 

@@ -44,7 +44,7 @@ class LC_Page_Plugin_PluginName_Config extends LC_Page_Admin_Ex
     {
         parent::init();
         
-        $this->tpl_mainpage = PLUGIN_UPLOAD_REALDIR . basename(__DIR__) . "/templates/config.tpl";
+        $this->tpl_mainpage = PLUGIN_UPLOAD_REALDIR . basename(__DIR__) . "/data/Smarty/templates/config.tpl";
         $this->tpl_subtitle = self::PLUGIN_NAME;
 
     }
