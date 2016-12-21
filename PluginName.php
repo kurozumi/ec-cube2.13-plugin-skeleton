@@ -196,6 +196,7 @@ class PluginName extends SC_Plugin_Base
      * @param array $free_fields
      */
     public static function updatePlugin($plugin_code, array $free_fields){
+        $objQuery = & SC_Query_Ex::getSingletonInstance();
         $objQuery->update("dtb_plugin", $free_fields, "plugin_code = ?", array($plugin_code));
     }
 
