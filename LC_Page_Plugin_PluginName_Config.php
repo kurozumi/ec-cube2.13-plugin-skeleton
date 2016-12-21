@@ -131,8 +131,8 @@ class LC_Page_Plugin_PluginName_Config extends LC_Page_Admin_Ex
 
     function updateData($arrData)
     {
-		$objQuery =& SC_Query_Ex::getSingletonInstance();
-		return $objQuery->update("dtb_plugin",$arrData,"plugin_code = ?",array(self::PLUGIN_NAME));
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        return $objQuery->update("dtb_plugin",$arrData,"plugin_code = ?",array(self::PLUGIN_NAME));
     }
 
 }
