@@ -44,13 +44,6 @@ class LC_Page_Plugin_PluginName_Config extends LC_Page_Admin_Ex
     {
         parent::init();
         
-        $plugin = SC_Plugin_Util_Ex::getPluginByPluginCode(self::PLUGIN_NAME);
-
-        if ($plugin["enable"] == 2) {
-            $this->tpl_onload = "alert('プラグインを有効にして下さい。');";
-            $this->tpl_onload .= 'window.close();';
-        }
-        
         $this->tpl_mainpage = PLUGIN_UPLOAD_REALDIR . basename(__DIR__) . "/templates/config.tpl";
         $this->tpl_subtitle = self::PLUGIN_NAME;
 
@@ -75,9 +68,71 @@ class LC_Page_Plugin_PluginName_Config extends LC_Page_Admin_Ex
      */
     function action()
     {
-        
+        $plugin = SC_Plugin_Util_Ex::getPluginByPluginCode(self::PLUGIN_NAME);
         //テンプレート設定(ポップアップなどの場合)
         $this->setTemplate($this->tpl_mainpage);
+        
+        if ($plugin["enable"] == 2) {
+            $this->enable = false;
+            return;
+        }
+        
+        $this->enable = true;
+
+        $this->lfInitParam($objFormParam);
+        $objFormParam->setParam($_POST);
+        $objFormParam->convParam();
+
+        $arrForm = array();
+        $mode = $this->getMode();
+        switch ($mode) {
+            // 登録
+            case 'confirm':
+                $arrForm = $objFormParam->getHashArray();
+                $this->arrErr = $objFormParam->checkError();
+
+                // エラーなしの場合にはデータを更新
+                if (count($this->arrErr) == 0) {
+                    // データ更新
+                    $ret = $this->updateData($arrForm);
+                    if ($ret) {
+                        $this->tpl_onload = "alert('登録が完了しました。');";
+                    }
+                }
+                break;
+            default:
+                $arrForm = array(
+                    'free_field1' => $plugin['free_field1'],
+                    'free_field2' => $plugin['free_field2'],
+                    'free_field3' => $plugin['free_field3'],
+                    'free_field4' => $plugin['free_field4']
+                );
+                if (!is_array($arrForm))
+                    $arrForm = array();
+                break;
+        }
+
+        $this->arrForm = $arrForm;
+    }
+    
+    /**
+     * パラメーター情報の初期化
+     *
+     * @param object $objFormParam SC_FormParamインスタンス
+     * @return void
+     */
+    function lfInitParam(&$objFormParam)
+    {
+        $objFormParam->addParam("フィールド1", "free_field1");
+        $objFormParam->addParam("フィールド2", "free_field2");
+        $objFormParam->addParam("フィールド3", "free_field3");
+        $objFormParam->addParam("フィールド4", "free_field4");
+    }
+
+    function updateData($arrData)
+    {
+		$objQuery =& SC_Query_Ex::getSingletonInstance();
+		return $objQuery->update("dtb_plugin",$arrData,"plugin_code = ?",array(self::PLUGIN_NAME));
     }
 
 }
