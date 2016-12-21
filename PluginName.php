@@ -56,7 +56,7 @@ class PluginName extends SC_Plugin_Base
      */
     public function install($arrPlugin, $objPluginInstaller = null)
     {
-        
+
     }
 
     /**
@@ -82,7 +82,13 @@ class PluginName extends SC_Plugin_Base
      */
     public function enable($arrPlugin, $objPluginInstaller = null)
     {
-        
+        // 有効時、プラグイン情報に値を入れたい場合使う
+        self::updatePlugin($arrPlugin["plugin_code"], array(
+            "free_field1" => "text1",
+            "free_field2" => "text2",
+            "free_field3" => "text3",
+            "free_field4" => "text4",
+        ));
     }
 
     /**
@@ -95,7 +101,13 @@ class PluginName extends SC_Plugin_Base
      */
     public function disable($arrPlugin, $objPluginInstaller = null)
     {
-        
+        // 無効時、プラグイン情報に値を初期化したい場合使う
+        self::updatePlugin($arrPlugin["plugin_code"], array(
+            "free_field1" => null,
+            "free_field2" => null,
+            "free_field3" => null,
+            "free_field4" => null,
+        ));
     }
 
     /**
@@ -151,6 +163,7 @@ class PluginName extends SC_Plugin_Base
 
     /**
      * テンプレートをフックする
+     * Smartyの編集はできない
      *
      * @param string &$source
      * @param LC_Page_Ex $objPage
@@ -174,6 +187,16 @@ class PluginName extends SC_Plugin_Base
         }
         $source = $objTransform->getHTML();
 
+    }
+    
+    /**
+     * プラグイン情報更新
+     * 
+     * @param string $plugin_code
+     * @param array $free_fields
+     */
+    public static function updatePlugin($plugin_code, array $free_fields){
+        $objQuery->update("dtb_plugin", $free_fields, "plugin_code = ?", array($plugin_code));
     }
 
 }
