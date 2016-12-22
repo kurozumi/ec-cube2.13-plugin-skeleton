@@ -81,6 +81,7 @@ class LC_Page_Plugin_PluginName_Config extends LC_Page_Admin_Ex
         
         $this->enable = true;
 
+        $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_POST);
         $objFormParam->convParam();
