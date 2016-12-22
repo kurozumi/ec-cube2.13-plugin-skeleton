@@ -33,7 +33,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  */
 class LC_Page_Plugin_PluginName_Config extends LC_Page_Admin_Ex
 {
-    const PLUGIN_NAME = "PluginName";
+    const PLUGIN_CODE = "PluginCode";
     
     /**
      * Page を初期化する.
@@ -44,8 +44,10 @@ class LC_Page_Plugin_PluginName_Config extends LC_Page_Admin_Ex
     {
         parent::init();
         
+        $plugin = SC_Plugin_Util_Ex::getPluginByPluginCode(self::PLUGIN_CODE);
+        
         $this->tpl_mainpage = PLUGIN_UPLOAD_REALDIR . basename(__DIR__) . "/data/Smarty/templates/config.tpl";
-        $this->tpl_subtitle = self::PLUGIN_NAME;
+        $this->tpl_subtitle = $plugin["plugin_name"];
 
     }
 
@@ -68,7 +70,7 @@ class LC_Page_Plugin_PluginName_Config extends LC_Page_Admin_Ex
      */
     function action()
     {
-        $plugin = SC_Plugin_Util_Ex::getPluginByPluginCode(self::PLUGIN_NAME);
+        $plugin = SC_Plugin_Util_Ex::getPluginByPluginCode(self::PLUGIN_CODE);
         //テンプレート設定(ポップアップなどの場合)
         $this->setTemplate($this->tpl_mainpage);
         
