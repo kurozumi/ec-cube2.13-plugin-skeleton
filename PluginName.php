@@ -145,7 +145,7 @@ class PluginName extends SC_Plugin_Base
     public function prefilterTransform(&$source, LC_Page_Ex $objPage, $filename)
     {
         $objTransform = new SC_Helper_Transform($source);
-        $template_dir = PLUGIN_UPLOAD_REALDIR . basename(__DIR__) . "/templates/";
+        $template_dir = PLUGIN_UPLOAD_REALDIR . basename(__DIR__) . "/data/Smarty/templates/";
         switch ($objPage->arrPageLayout['device_type_id']) {
             case DEVICE_TYPE_PC:
                 break;
@@ -173,7 +173,7 @@ class PluginName extends SC_Plugin_Base
     public function outputfilterTransform(&$source, LC_Page_Ex $objPage, $filename)
     {
         $objTransform = new SC_Helper_Transform($source);
-        $template_dir = PLUGIN_UPLOAD_REALDIR . basename(__DIR__) . "/templates/";
+        $template_dir = PLUGIN_UPLOAD_REALDIR . basename(__DIR__) . "/data/Smarty/templates/";
         switch ($objPage->arrPageLayout['device_type_id']) {
             case DEVICE_TYPE_PC:
                 break;
