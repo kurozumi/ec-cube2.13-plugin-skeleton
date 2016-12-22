@@ -131,6 +131,7 @@ class PluginName extends SC_Plugin_Base
      */
     public function loadClassFileChange(&$classname, &$classpath)
     {
+        $base_path = PLUGIN_UPLOAD_REALDIR . basename(__DIR__) . "/data/class/";
         
     }
 
