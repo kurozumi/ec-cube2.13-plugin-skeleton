@@ -119,7 +119,7 @@ class PluginName extends SC_Plugin_Base
     {
         $objHelperPlugin->addAction("loadClassFileChange", array(&$this, "loadClassFileChange"), $priority);
         $objHelperPlugin->addAction("prefilterTransform", array(&$this, "prefilterTransform"), $priority);
-        $objHelperPlugin->addAction("outputfilterTransform", array(&$this, "outputfilterTransform"), $priority;
+        $objHelperPlugin->addAction("outputfilterTransform", array(&$this, "outputfilterTransform"), $priority);
 
     }
 
