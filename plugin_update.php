@@ -43,7 +43,15 @@ class plugin_update
      */
     public function update($arrPlugin)
     {
-        // nop
+        // 管理用のページを配置。 
+        $src_dir = PLUGIN_UPLOAD_REALDIR . "{$arrPlugin["plugin_code"]}/html/admin/";
+        $dest_dir = HTML_REALDIR . ADMIN_DIR;
+        SC_Utils::copyDirectory($src_dir, $dest_dir);
+        
+        // テンプレートを更新。
+        $src_dir = PLUGIN_UPLOAD_REALDIR . "{$arrPlugin["plugin_code"]}/data/Smarty/templates/";
+        $dest_dir = SMARTY_TEMPLATES_REALDIR;
+        SC_Utils::copyDirectory($src_dir, $dest_dir);
 
     }
 
