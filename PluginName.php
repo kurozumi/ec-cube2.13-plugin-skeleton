@@ -80,12 +80,12 @@ class PluginName extends SC_Plugin_Base
         // 管理用のページを削除。 
         $target_dir = HTML_REALDIR . ADMIN_DIR;
         $source_dir = PLUGIN_UPLOAD_REALDIR . "{$arrPlugin["plugin_code"]}/html/admin/";
-        self::deleteFileByMirror($target_dir, $source_dir);
+        self::deleteDirectory($target_dir, $source_dir);
         
         // テンプレートを削除。 
         $target_dir = SMARTY_TEMPLATES_REALDIR;
         $source_dir = PLUGIN_UPLOAD_REALDIR . "{$arrPlugin["plugin_code"]}/data/Smarty/templates/";
-        self::deleteFileByMirror($target_dir, $source_dir);
+        self::deleteDirectory($target_dir, $source_dir);
     }
 
     /**
@@ -222,12 +222,12 @@ class PluginName extends SC_Plugin_Base
     }
     
     /**
-     * 指定されたパスの配下を再帰的に削除します。
+     * 指定されたパスを比較して再帰的に削除します。
      * 
      * @param string $target_dir 削除対象のディレクトリ
      * @param string $source_dir 比較対象のディレクトリ
      */
-    public static function deleteFileByMirror($target_dir, $source_dir) {
+    public static function deleteDirectory($target_dir, $source_dir) {
         $dir = opendir($source_dir);
         while ($name = readdir($dir)) {
             if ($name == '.' || $name == '..') {
@@ -244,7 +244,7 @@ class PluginName extends SC_Plugin_Base
                 }
             } elseif (is_dir($source_path)) {
                 if (is_dir($target_path)) {
-                    self::deleteFileByMirror($target_path, $source_path);
+                    self::deleteDirectory($target_path, $source_path);
                 }
             }
         }
