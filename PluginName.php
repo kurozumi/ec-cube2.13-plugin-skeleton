@@ -56,7 +56,15 @@ class PluginName extends SC_Plugin_Base
      */
     public function install($arrPlugin, $objPluginInstaller = null)
     {
-
+        // 管理用のページを配置。 
+        $src_dir = PLUGIN_UPLOAD_REALDIR . "{$arrPlugin["plugin_code"]}/html/admin/";
+        $dest_dir = HTML_REALDIR . ADMIN_DIR;
+        SC_Utils::copyDirectory($src_dir, $dest_dir);
+        
+        // テンプレートを配置。
+        $src_dir = PLUGIN_UPLOAD_REALDIR . "{$arrPlugin["plugin_code"]}/data/Smarty/templates/";
+        $dest_dir = SMARTY_TEMPLATES_REALDIR;
+        SC_Utils::copyDirectory($src_dir, $dest_dir);
     }
 
     /**
@@ -69,7 +77,15 @@ class PluginName extends SC_Plugin_Base
      */
     public function uninstall($arrPlugin, $objPluginInstaller = null)
     {
+        // 管理用のページを削除。 
+        $target_dir = HTML_REALDIR . ADMIN_DIR;
+        $source_dir = PLUGIN_UPLOAD_REALDIR . "{$arrPlugin["plugin_code"]}/html/admin/";
+        self::deleteFileByMirror($target_dir, $source_dir);
         
+        // テンプレートを削除。 
+        $target_dir = SMARTY_TEMPLATES_REALDIR;
+        $source_dir = PLUGIN_UPLOAD_REALDIR . "{$arrPlugin["plugin_code"]}/data/Smarty/templates/";
+        self::deleteFileByMirror($target_dir, $source_dir);
     }
 
     /**
@@ -146,7 +162,6 @@ class PluginName extends SC_Plugin_Base
     public function prefilterTransform(&$source, LC_Page_Ex $objPage, $filename)
     {
         $objTransform = new SC_Helper_Transform($source);
-        $template_dir = PLUGIN_UPLOAD_REALDIR . basename(__DIR__) . "/data/Smarty/templates/";
         switch ($objPage->arrPageLayout['device_type_id']) {
             case DEVICE_TYPE_PC:
                 break;
@@ -156,6 +171,11 @@ class PluginName extends SC_Plugin_Base
                 break;
             case DEVICE_TYPE_ADMIN:
             default:
+                if (strpos($filename, "customer/subnavi.tpl") !== false) {
+                    $template_path = "customer/plg_subnavi.tpl";
+                    $template = "<!--{include file='{$template_path}'}-->";
+                    $objTransform->select('ul')->appendChild($template);
+                }
                 break;
         }
         $source = $objTransform->getHTML();
@@ -199,6 +219,36 @@ class PluginName extends SC_Plugin_Base
     public static function updatePlugin($plugin_code, array $free_fields){
         $objQuery = & SC_Query_Ex::getSingletonInstance();
         $objQuery->update("dtb_plugin", $free_fields, "plugin_code = ?", array($plugin_code));
+    }
+    
+    /**
+     * 指定されたパスの配下を再帰的に削除します。
+     * 
+     * @param string $target_dir 削除対象のディレクトリ
+     * @param string $source_dir 比較対象のディレクトリ
+     */
+    public static function deleteFileByMirror($target_dir, $source_dir) {
+        $dir = opendir($source_dir);
+        while ($name = readdir($dir)) {
+            if ($name == '.' || $name == '..') {
+                continue;
+            }
+
+            $target_path = $target_dir . '/' . $name;
+            $source_path = $source_dir . '/' . $name;
+            
+            if (is_file($source_path)) {
+                if (is_file($target_path)) {
+                    unlink($target_path);
+                    GC_Utils::gfPrintLog("$target_path を削除しました。");
+                }
+            } elseif (is_dir($source_path)) {
+                if (is_dir($target_path)) {
+                    self::deleteFileByMirror($target_path, $source_path);
+                }
+            }
+        }
+        closedir($dir);
     }
 
 }
