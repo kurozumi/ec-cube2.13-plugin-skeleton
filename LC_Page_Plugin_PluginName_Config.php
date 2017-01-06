@@ -46,7 +46,7 @@ class LC_Page_Plugin_PluginName_Config extends LC_Page_Admin_Ex
         
         $plugin = SC_Plugin_Util_Ex::getPluginByPluginCode(self::PLUGIN_CODE);
         
-        $this->tpl_mainpage = PLUGIN_UPLOAD_REALDIR . basename(__DIR__) . "/data/Smarty/templates/plg_PluginName_config.tpl";
+        $this->tpl_mainpage = PLUGIN_UPLOAD_REALDIR . basename(__DIR__) . "/data/Smarty/config.tpl";
         $this->tpl_subtitle = $plugin["plugin_name"];
 
     }
