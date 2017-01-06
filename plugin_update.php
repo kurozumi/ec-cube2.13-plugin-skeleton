@@ -43,9 +43,9 @@ class plugin_update
      */
     public function update($arrPlugin)
     {
-        // 管理用のページを配置。 
-        $src_dir = PLUGIN_UPLOAD_REALDIR . "{$arrPlugin["plugin_code"]}/html/admin/";
-        $dest_dir = HTML_REALDIR . ADMIN_DIR;
+        // htmlディレクトリにファイルを配置。
+        $src_dir = PLUGIN_UPLOAD_REALDIR . "{$arrPlugin["plugin_code"]}/html/";
+        $dest_dir = HTML_REALDIR;
         SC_Utils::copyDirectory($src_dir, $dest_dir);
         
         // テンプレートを更新。
