@@ -56,9 +56,9 @@ class PluginName extends SC_Plugin_Base
      */
     public function install($arrPlugin, $objPluginInstaller = null)
     {
-        // 管理用のページを配置。 
-        $src_dir = PLUGIN_UPLOAD_REALDIR . "{$arrPlugin["plugin_code"]}/html/admin/";
-        $dest_dir = HTML_REALDIR . ADMIN_DIR;
+        // htmlディレクトリにファイルを配置。
+        $src_dir = PLUGIN_UPLOAD_REALDIR . "{$arrPlugin["plugin_code"]}/html/";
+        $dest_dir = HTML_REALDIR;
         SC_Utils::copyDirectory($src_dir, $dest_dir);
         
         // テンプレートを配置。
@@ -77,9 +77,9 @@ class PluginName extends SC_Plugin_Base
      */
     public function uninstall($arrPlugin, $objPluginInstaller = null)
     {
-        // 管理用のページを削除。 
-        $target_dir = HTML_REALDIR . ADMIN_DIR;
-        $source_dir = PLUGIN_UPLOAD_REALDIR . "{$arrPlugin["plugin_code"]}/html/admin/";
+        // htmlディレクトリのファイルを削除。
+        $target_dir = HTML_REALDIR;
+        $source_dir = PLUGIN_UPLOAD_REALDIR . "{$arrPlugin["plugin_code"]}/html/";
         self::deleteDirectory($target_dir, $source_dir);
         
         // テンプレートを削除。 
