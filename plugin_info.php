@@ -60,16 +60,6 @@ class plugin_info
     /** プラグインのサイトURL : 設定されている場合はプラグイン管理画面の作者名がリンクになります。 */
     static $PLUGIN_SITE_URL = "http://a-zumi.net";
 
-    /** 使用するフックポイント：使用するフックポイントを設定すると、フックポイントが競合した際にアラートが出ます。
-     *  ここで宣言するとインストール時にdtb_plugin_hookpointsに登録され、
-     *  register関数を書かずにフックポイントでの介入が可能です。
-     */
-    static $HOOK_POINTS = array(
-        array("loadClassFileChange", "loadClassFileChange"), // SC_系クラスをフック
-        array("prefilterTransform", "prefilterTransform"), // コンパイル前のテンプレートをフック
-        array("outputfilterTransform", "outputfilterTransform") // コンパイル後のテンプレートをフック
-    );
-
     /** ライセンス */
     static $LICENSE = "LGPL";
 
