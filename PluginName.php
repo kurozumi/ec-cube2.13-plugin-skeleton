@@ -60,11 +60,7 @@ class PluginName extends SC_Plugin_Base
         $src_dir = PLUGIN_UPLOAD_REALDIR . "{$arrPlugin["plugin_code"]}/html/";
         $dest_dir = HTML_REALDIR;
         SC_Utils::copyDirectory($src_dir, $dest_dir);
-        
-        // テンプレートを配置。
-        $src_dir = PLUGIN_UPLOAD_REALDIR . "{$arrPlugin["plugin_code"]}/data/Smarty/templates/";
-        $dest_dir = SMARTY_TEMPLATES_REALDIR;
-        SC_Utils::copyDirectory($src_dir, $dest_dir);
+
     }
 
     /**
@@ -81,11 +77,7 @@ class PluginName extends SC_Plugin_Base
         $target_dir = HTML_REALDIR;
         $source_dir = PLUGIN_UPLOAD_REALDIR . "{$arrPlugin["plugin_code"]}/html/";
         self::deleteDirectory($target_dir, $source_dir);
-        
-        // テンプレートを削除。 
-        $target_dir = SMARTY_TEMPLATES_REALDIR;
-        $source_dir = PLUGIN_UPLOAD_REALDIR . "{$arrPlugin["plugin_code"]}/data/Smarty/templates/";
-        self::deleteDirectory($target_dir, $source_dir);
+
     }
 
     /**
@@ -162,20 +154,27 @@ class PluginName extends SC_Plugin_Base
     public function prefilterTransform(&$source, LC_Page_Ex $objPage, $filename)
     {
         $objTransform = new SC_Helper_Transform($source);
+        $template_dir = PLUGIN_UPLOAD_REALDIR . basename(__DIR__) . '/data/Smarty/templates/';
+        
         switch ($objPage->arrPageLayout['device_type_id']) {
             case DEVICE_TYPE_PC:
+                $template_dir = $template_dir . "default/";
                 break;
             case DEVICE_TYPE_MOBILE:
+                $template_dir = $template_dir . "mobile/";
                 break;
             case DEVICE_TYPE_SMARTPHONE:
+                $template_dir = $template_dir . "sphone/";
                 break;
             case DEVICE_TYPE_ADMIN:
-            default:
+                $template_dir = $template_dir . "admin/";
                 if (strpos($filename, "customer/subnavi.tpl") !== false) {
-                    $template_path = "customer/plg_subnavi.tpl";
-                    $template = "<!--{include file='{$template_path}'}-->";
-                    $objTransform->select('ul')->appendChild($template);
+                    $objTransform->select('ul')->appendChild(
+                        file_get_contents($template_dir . 'customer/subnavi.tpl'));
                 }
+                break;
+            default:
+                $template_dir = $template_dir . "default/frontparts";
                 break;
         }
         $source = $objTransform->getHTML();
