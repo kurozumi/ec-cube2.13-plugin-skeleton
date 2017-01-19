@@ -169,8 +169,9 @@ class PluginName extends SC_Plugin_Base
             case DEVICE_TYPE_ADMIN:
                 $template_dir = $template_dir . "admin/";
                 if (strpos($filename, "customer/subnavi.tpl") !== false) {
+                    $template_path = 'customer/subnavi.tpl';
                     $objTransform->select('ul')->appendChild(
-                        file_get_contents($template_dir . 'customer/subnavi.tpl'));
+                        file_get_contents($template_dir . $template_path));
                 }
                 break;
             default:
