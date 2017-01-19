@@ -175,7 +175,7 @@ class PluginName extends SC_Plugin_Base
                 }
                 break;
             default:
-                $template_dir = $template_dir . "default/frontparts";
+                $template_dir = $template_dir . "default/frontparts/";
                 break;
         }
         $source = $objTransform->getHTML();
