@@ -169,15 +169,15 @@ class PluginName extends SC_Plugin_Base
             case DEVICE_TYPE_ADMIN:
             default:
                 // 管理画面編集
-                $template_dir = $template_dir . "admin/";
+                $template_admin_dir = $template_dir . "admin/";
                 if (strpos($filename, "customer/subnavi.tpl") !== false) {
                     $template_path = 'customer/subnavi.tpl';
                     $objTransform->select('ul')->appendChild(
-                        file_get_contents($template_dir . $template_path));
+                        file_get_contents($template_admin_dir . $template_path));
                 }
 
                 // ブロック編集
-                $template_dir = $template_dir . "default/frontparts/";
+                $template_frontparts_dir = $template_dir . "default/frontparts/";
                 break;
         }
         $source = $objTransform->getHTML();
