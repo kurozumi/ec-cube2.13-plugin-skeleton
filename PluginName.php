@@ -60,11 +60,6 @@ class PluginName extends SC_Plugin_Base
         $src_dir = PLUGIN_UPLOAD_REALDIR . "{$arrPlugin["plugin_code"]}/html/";
         $dest_dir = HTML_REALDIR;
         SC_Utils::copyDirectory($src_dir, $dest_dir);
-        
-        // テンプレートを配置。
-        $src_dir = PLUGIN_UPLOAD_REALDIR . "{$arrPlugin["plugin_code"]}/data/Smarty/templates/admin/";
-        $dest_dir = TEMPLATE_ADMIN_REALDIR;
-        SC_Utils::copyDirectory($src_dir, $dest_dir);
 
     }
 
@@ -82,11 +77,7 @@ class PluginName extends SC_Plugin_Base
         $target_dir = HTML_REALDIR;
         $source_dir = PLUGIN_UPLOAD_REALDIR . "{$arrPlugin["plugin_code"]}/html/";
         self::deleteDirectory($target_dir, $source_dir);
-        
-        // テンプレートを削除。 
-        $target_dir = TEMPLATE_ADMIN_REALDIR;
-        $source_dir = PLUGIN_UPLOAD_REALDIR . "{$arrPlugin["plugin_code"]}/data/Smarty/templates/admin/";
-        self::deleteDirectory($target_dir, $source_dir);
+
 
     }
 
@@ -107,6 +98,8 @@ class PluginName extends SC_Plugin_Base
             "free_field3" => "text3",
             "free_field4" => "text4",
         ));
+        
+        self::copyTemplate($arrPlugin);
     }
 
     /**
@@ -126,6 +119,8 @@ class PluginName extends SC_Plugin_Base
             "free_field3" => null,
             "free_field4" => null,
         ));
+        
+        self::deleteTemplate($arrPlugin);
     }
 
     /**
@@ -164,22 +159,18 @@ class PluginName extends SC_Plugin_Base
     public function prefilterTransform(&$source, LC_Page_Ex $objPage, $filename)
     {
         $objTransform = new SC_Helper_Transform($source);
-        $template_dir = PLUGIN_UPLOAD_REALDIR . basename(__DIR__) . '/data/Smarty/templates/';
-        
+       
         switch ($objPage->arrPageLayout['device_type_id']) {
             case DEVICE_TYPE_PC:
-                $template_dir = $template_dir . "default/";
                 if (strpos($filename, "header.tpl") !== false) {
-                    $template_path = 'header.tpl';
-                    $objTransform->select('#header_wrap')->appendChild(
-                        file_get_contents($template_admin_dir . $template_path));
+                    $template_path = 'plg_PluginName_header.tpl';
+                    $template = "<!--{include file='{$template_path}'}-->";
+                    $objTransform->select('#header_wrap')->appendChild($template);
                 }
                 break;
             case DEVICE_TYPE_MOBILE:
-                $template_dir = $template_dir . "mobile/";
                 break;
             case DEVICE_TYPE_SMARTPHONE:
-                $template_dir = $template_dir . "sphone/";
                 break;
             case DEVICE_TYPE_ADMIN:
             default:
@@ -191,7 +182,6 @@ class PluginName extends SC_Plugin_Base
                 }
 
                 // ブロック編集
-                $template_dir = $template_dir . "default/frontparts/";
                 break;
         }
         $source = $objTransform->getHTML();
@@ -265,6 +255,60 @@ class PluginName extends SC_Plugin_Base
             }
         }
         closedir($dir);
+    }
+    
+    /**
+     * 本体にテンプレートをコピー
+     * 
+     * @param type $arrPlugin
+     */
+    public static function copyTemplate($arrPlugin)
+    {
+        $src_dir = PLUGIN_UPLOAD_REALDIR . "{$arrPlugin["plugin_code"]}/data/Smarty/templates/";
+
+        // 管理画面テンプレートを配置。
+        $dest_dir = TEMPLATE_ADMIN_REALDIR;
+        SC_Utils::copyDirectory($src_dir . "admin/", $dest_dir);
+
+        // PCテンプレートを配置。
+        $dest_dir = SC_Helper_PageLayout_Ex::getTemplatePath(DEVICE_TYPE_PC);
+        SC_Utils::copyDirectory($src_dir . "default/", $dest_dir);
+
+        // スマホテンプレートを配置。
+        $dest_dir = SC_Helper_PageLayout_Ex::getTemplatePath(DEVICE_TYPE_SMARTPHONE);
+        SC_Utils::copyDirectory($src_dir . "sphone/", $dest_dir);
+
+        // モバイルテンプレートを配置。
+        $dest_dir = SC_Helper_PageLayout_Ex::getTemplatePath(DEVICE_TYPE_MOBILE);
+        SC_Utils::copyDirectory($src_dir . "mobile/", $dest_dir);
+
+    }
+
+    /**
+     * 本体にコピーしたテンプレートを削除
+     * 
+     * @param type $arrPlugin
+     */
+    public static function deleteTemplate($arrPlugin)
+    {
+        $src_dir = PLUGIN_UPLOAD_REALDIR . "{$arrPlugin["plugin_code"]}/data/Smarty/templates/";
+
+        // 管理画面テンプレートを削除。 
+        $target_dir = TEMPLATE_ADMIN_REALDIR;
+        self::deleteDirectory($target_dir, $src_dir . "admin/");
+
+        // PCテンプレートを削除。
+        $target_dir = SC_Helper_PageLayout_Ex::getTemplatePath(DEVICE_TYPE_PC);
+        self::deleteDirectory($target_dir, $src_dir . "default/");
+
+        // スマホテンプレートを削除。
+        $target_dir = SC_Helper_PageLayout_Ex::getTemplatePath(DEVICE_TYPE_SMARTPHONE);
+        self::deleteDirectory($target_dir, $src_dir . "sphone");
+
+        // モバイルテンプレートを削除。
+        $target_dir = SC_Helper_PageLayout_Ex::getTemplatePath(DEVICE_TYPE_MOBILE);
+        self::deleteDirectory($target_dir, $src_dir . "mobile");
+
     }
 
 }
