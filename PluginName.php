@@ -167,14 +167,16 @@ class PluginName extends SC_Plugin_Base
                 $template_dir = $template_dir . "sphone/";
                 break;
             case DEVICE_TYPE_ADMIN:
+            default:
+                // 管理画面編集
                 $template_dir = $template_dir . "admin/";
                 if (strpos($filename, "customer/subnavi.tpl") !== false) {
                     $template_path = 'customer/subnavi.tpl';
                     $objTransform->select('ul')->appendChild(
                         file_get_contents($template_dir . $template_path));
                 }
-                break;
-            default:
+
+                // ブロック編集
                 $template_dir = $template_dir . "default/frontparts/";
                 break;
         }
