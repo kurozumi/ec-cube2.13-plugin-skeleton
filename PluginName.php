@@ -169,6 +169,11 @@ class PluginName extends SC_Plugin_Base
         switch ($objPage->arrPageLayout['device_type_id']) {
             case DEVICE_TYPE_PC:
                 $template_dir = $template_dir . "default/";
+                if (strpos($filename, "header.tpl") !== false) {
+                    $template_path = 'header.tpl';
+                    $objTransform->select('#header_wrap')->appendChild(
+                        file_get_contents($template_admin_dir . $template_path));
+                }
                 break;
             case DEVICE_TYPE_MOBILE:
                 $template_dir = $template_dir . "mobile/";
@@ -179,15 +184,14 @@ class PluginName extends SC_Plugin_Base
             case DEVICE_TYPE_ADMIN:
             default:
                 // 管理画面編集
-                $template_admin_dir = $template_dir . "admin/";
                 if (strpos($filename, "customer/subnavi.tpl") !== false) {
                     $template_path = 'customer/plg_PluginName_subnavi.tpl';
-                    $objTransform->select('ul')->appendChild(
-                        file_get_contents($template_admin_dir . $template_path));
+                    $template = "<!--{include file='{$template_path}'}-->";
+                    $objTransform->select('ul')->appendChild($template);
                 }
 
                 // ブロック編集
-                $template_frontparts_dir = $template_dir . "default/frontparts/";
+                $template_dir = $template_dir . "default/frontparts/";
                 break;
         }
         $source = $objTransform->getHTML();
