@@ -60,6 +60,11 @@ class PluginName extends SC_Plugin_Base
         $src_dir = PLUGIN_UPLOAD_REALDIR . "{$arrPlugin["plugin_code"]}/html/";
         $dest_dir = HTML_REALDIR;
         SC_Utils::copyDirectory($src_dir, $dest_dir);
+        
+        // テンプレートを配置。
+        $src_dir = PLUGIN_UPLOAD_REALDIR . "{$arrPlugin["plugin_code"]}/data/Smarty/templates/admin/";
+        $dest_dir = TEMPLATE_ADMIN_REALDIR;
+        SC_Utils::copyDirectory($src_dir, $dest_dir);
 
     }
 
@@ -76,6 +81,11 @@ class PluginName extends SC_Plugin_Base
         // htmlディレクトリのファイルを削除。
         $target_dir = HTML_REALDIR;
         $source_dir = PLUGIN_UPLOAD_REALDIR . "{$arrPlugin["plugin_code"]}/html/";
+        self::deleteDirectory($target_dir, $source_dir);
+        
+        // テンプレートを削除。 
+        $target_dir = TEMPLATE_ADMIN_REALDIR;
+        $source_dir = PLUGIN_UPLOAD_REALDIR . "{$arrPlugin["plugin_code"]}/data/Smarty/templates/admin/";
         self::deleteDirectory($target_dir, $source_dir);
 
     }
@@ -171,7 +181,7 @@ class PluginName extends SC_Plugin_Base
                 // 管理画面編集
                 $template_admin_dir = $template_dir . "admin/";
                 if (strpos($filename, "customer/subnavi.tpl") !== false) {
-                    $template_path = 'customer/subnavi.tpl';
+                    $template_path = 'customer/plg_PluginName_subnavi.tpl';
                     $objTransform->select('ul')->appendChild(
                         file_get_contents($template_admin_dir . $template_path));
                 }
