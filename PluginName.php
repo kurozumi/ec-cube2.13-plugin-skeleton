@@ -259,9 +259,11 @@ class PluginName extends SC_Plugin_Base
      * @param type $name
      * @return int
      */
-    public static function insertMasterDataId($mtb, $name)
+    public static function insertMasterDataId($mtb, $name, $id=null)
     {
-        $id = self::getNextMasterDataId($mtb);
+        if(is_null($id))
+            $id = self::getNextMasterDataId($mtb);
+
         $objQuery = & SC_Query_Ex::getSingletonInstance();
         $objQuery->insert($mtb, array(
             'id'   => $id,
