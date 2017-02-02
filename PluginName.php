@@ -228,6 +228,30 @@ class PluginName extends SC_Plugin_Base
     }
     
     /**
+     * 次に割り当てるMasterDataのIDを取得する
+     * 
+     * @param type $name
+     * @return type
+     */
+    public static function getNextMasterDataId($name)
+    {
+        $objQuery = & SC_Query_Ex::getSingletonInstance();
+        return $objQuery->max("id", $name) + 1;
+    }
+
+    /**
+     * 次に割り当てるMasterDataのRANKを取得する
+     * 
+     * @param type $name
+     * @return type
+     */
+    public static function getNextMasterDataRank($name)
+    {
+        $objQuery = & SC_Query_Ex::getSingletonInstance();
+        return $objQuery->max("rank", $name) + 1;
+    }
+    
+    /**
      * 指定されたパスを比較して再帰的に削除します。
      * 
      * @param string $target_dir 削除対象のディレクトリ
