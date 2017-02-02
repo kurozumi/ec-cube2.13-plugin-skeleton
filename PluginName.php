@@ -252,14 +252,37 @@ class PluginName extends SC_Plugin_Base
     }
     
     /**
+     * MasterDataに追加
+     * 
+     * @param type $mtb
+     * @param type $name
+     * @return int
+     */
+    public static function insertMasterDataId($mtb, $name)
+    {
+        $id = self::getNextMasterDataId($mtb);
+        $objQuery = & SC_Query_Ex::getSingletonInstance();
+        $objQuery->insert($mtb, array(
+            'id'   => $id,
+            'name' => $name,
+            'rank' => self::getNextMasterDataRank($mtb)));
+
+        $masterData = new SC_DB_MasterData_Ex();
+        $masterData->clearCache($mtb);
+        
+        return $id;
+    }
+    
+    /**
      * MasterDataの指定IDを削除
      * 
      * @param SC_Query $objQuery
      * @param string $mtb
      * @param int $id
      */
-    public static function deleteMasterDataId(SC_Query &$objQuery, $mtb, $id)
+    public static function deleteMasterDataId($mtb, $id)
     {
+        $objQuery = & SC_Query_Ex::getSingletonInstance();
         $objQuery->delete($mtb, "id=?", array($id));
 
         $masterData = new SC_DB_MasterData_Ex();
