@@ -230,25 +230,41 @@ class PluginName extends SC_Plugin_Base
     /**
      * 次に割り当てるMasterDataのIDを取得する
      * 
-     * @param type $name
-     * @return type
+     * @param string $mtb
+     * @return int
      */
-    public static function getNextMasterDataId($name)
+    public static function getNextMasterDataId($mtb)
     {
         $objQuery = & SC_Query_Ex::getSingletonInstance();
-        return $objQuery->max("id", $name) + 1;
+        return $objQuery->max("id", $mtb) + 1;
     }
 
     /**
      * 次に割り当てるMasterDataのRANKを取得する
      * 
-     * @param type $name
-     * @return type
+     * @param string $mtb
+     * @return int
      */
-    public static function getNextMasterDataRank($name)
+    public static function getNextMasterDataRank($mtb)
     {
         $objQuery = & SC_Query_Ex::getSingletonInstance();
-        return $objQuery->max("rank", $name) + 1;
+        return $objQuery->max("rank", $mtb) + 1;
+    }
+    
+    /**
+     * MasterDataの指定IDを削除
+     * 
+     * @param SC_Query $objQuery
+     * @param string $mtb
+     * @param int $id
+     */
+    public static function deleteMasterDataId(SC_Query &$objQuery, $mtb, $id)
+    {
+        $objQuery->delete($mtb, "id=?", array($id));
+
+        $masterData = new SC_DB_MasterData_Ex();
+        $masterData->clearCache($mtb);
+
     }
     
     /**
