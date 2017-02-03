@@ -301,7 +301,7 @@ class PluginName extends SC_Plugin_Base
      */
     public static function deleteDirectory($target_dir, $source_dir)
     {
-        if($dir = opendir($source_dir) {
+        if($dir = opendir($source_dir)) {
             while ($name = readdir($dir)) {
                 if ($name == '.' || $name == '..') {
                     continue;
