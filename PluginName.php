@@ -299,28 +299,30 @@ class PluginName extends SC_Plugin_Base
      * @param string $target_dir 削除対象のディレクトリ
      * @param string $source_dir 比較対象のディレクトリ
      */
-    public static function deleteDirectory($target_dir, $source_dir) {
-        $dir = opendir($source_dir);
-        while ($name = readdir($dir)) {
-            if ($name == '.' || $name == '..') {
-                continue;
-            }
+    public static function deleteDirectory($target_dir, $source_dir)
+    {
+        if($dir = opendir($source_dir) {
+            while ($name = readdir($dir)) {
+                if ($name == '.' || $name == '..') {
+                    continue;
+                }
 
-            $target_path = $target_dir . '/' . $name;
-            $source_path = $source_dir . '/' . $name;
-            
-            if (is_file($source_path)) {
-                if (is_file($target_path)) {
-                    unlink($target_path);
-                    GC_Utils::gfPrintLog("$target_path を削除しました。");
-                }
-            } elseif (is_dir($source_path)) {
-                if (is_dir($target_path)) {
-                    self::deleteDirectory($target_path, $source_path);
+                $target_path = $target_dir . '/' . $name;
+                $source_path = $source_dir . '/' . $name;
+
+                if (is_file($source_path)) {
+                    if (is_file($target_path)) {
+                        unlink($target_path);
+                        GC_Utils::gfPrintLog("$target_path を削除しました。");
+                    }
+                } elseif (is_dir($source_path)) {
+                    if (is_dir($target_path)) {
+                        self::deleteDirectory($target_path, $source_path);
+                    }
                 }
             }
+            closedir($dir);
         }
-        closedir($dir);
     }
     
     /**
