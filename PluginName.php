@@ -182,7 +182,23 @@ class PluginName extends SC_Plugin_Base
                     $objTransform->select('ul')->appendChild($template);
                 }
 
-                // ブロック編集
+                // ブロック編集(PC)
+                $template_dir = $template_dir . "default/frontparts/";
+                
+                if (strpos($filename, TEMPLATE_NAME . "/frontparts/bloc/login.tpl") !== false) {
+                    $template_path = "bloc/plg_PluginName_login.tpl";
+                    $objTransform->select(".block_body")->appendChild(
+                            file_get_contents($template_dir . $template_path));
+                }
+                
+                // ブロック編集(SMARTPHONE)
+                $template_dir = $template_dir . "sphone/frontparts/";
+                
+                if (strpos($filename, SMARTPHONE_TEMPLATE_NAME . "/frontparts/bloc/login.tpl") !== false) {
+                    $template_path = "bloc/plg_PluginName_login.tpl";
+                    $objTransform->select("nav.top_menu")->appendChild(
+                            file_get_contents($template_dir . $template_path));
+                }
                 break;
         }
         $source = $objTransform->getHTML();
