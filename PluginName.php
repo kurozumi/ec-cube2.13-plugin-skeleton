@@ -41,9 +41,23 @@ class PluginName extends SC_Plugin_Base
      */
     public function __construct(array $arrSelfInfo)
     {
+        self::setupAutoloader();
+        
         // プラグインを有効化したときの初期設定をココに追加する
         if($arrSelfInfo["enable"] == 1) {}
 
+    }
+    
+    protected static $isAutoloaderRegistered = false;
+    
+    /**
+     * 独自ライブラリのパス設定
+     */
+    public static function setupAutoloader() {
+        if (!self::$isAutoloaderRegistered) {
+            $path = dirname(__FILE__) . "/lib";
+            ini_set('include_path', ini_get('include_path') . PATH_SEPARATOR . $path);
+        }
     }
 
     /**
@@ -56,6 +70,8 @@ class PluginName extends SC_Plugin_Base
      */
     public function install($arrPlugin, $objPluginInstaller = null)
     {
+        self::setupAutoloader();
+        
         // htmlディレクトリにファイルを配置。
         $src_dir = PLUGIN_UPLOAD_REALDIR . "{$arrPlugin["plugin_code"]}/html/";
         $dest_dir = HTML_REALDIR;
@@ -73,6 +89,8 @@ class PluginName extends SC_Plugin_Base
      */
     public function uninstall($arrPlugin, $objPluginInstaller = null)
     {
+        self::setupAutoloader();
+        
         // htmlディレクトリのファイルを削除。
         $target_dir = HTML_REALDIR;
         $source_dir = PLUGIN_UPLOAD_REALDIR . "{$arrPlugin["plugin_code"]}/html/";
@@ -91,6 +109,8 @@ class PluginName extends SC_Plugin_Base
      */
     public function enable($arrPlugin, $objPluginInstaller = null)
     {
+        self::setupAutoloader();
+        
         // 有効時、プラグイン情報に値を入れたい場合使う
         self::updatePlugin($arrPlugin["plugin_code"], array(
             "free_field1" => "text1",
@@ -112,6 +132,8 @@ class PluginName extends SC_Plugin_Base
      */
     public function disable($arrPlugin, $objPluginInstaller = null)
     {
+        self::setupAutoloader();
+        
         // 無効時、プラグイン情報に値を初期化したい場合使う
         self::updatePlugin($arrPlugin["plugin_code"], array(
             "free_field1" => null,
